@@ -1,3 +1,7 @@
+/*
+ * Does not process domain names or IP addresses.
+ * Does not handle encoding for the query parameter.
+ */
 function URL(url, base) {
   var hierarchical = {
         "ftp": 21,
