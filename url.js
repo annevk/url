@@ -303,19 +303,10 @@ function URL(url, base) {
           continue
         }
       } else if("hierarchical path" == state) {
-        if(EOF == c || "/" == c || "\\" == c) {
+        if(EOF == c || "/" == c || "\\" == c || (!stateOverride && ("?" == c || "#" == c))) {
           if(".." == buffer) {
             path.pop()
-          } else if("." == buffer && EOF == c) {
-            path.push("")
-          } else if("." != buffer) {
-            path.push(buffer)
-          }
-          buffer = ""
-        } else if(!stateOverride && ("?" == c || "#" == c)) {
-          if(".." == buffer) {
-            path.pop()
-          } else if("." == buffer && ("?" == c || "#" == c)) {
+          } else if("." == buffer && (EOF == c || "?" == c || "#" == c)) {
             path.push("")
           } else if("." != buffer) {
             path.push(buffer)
