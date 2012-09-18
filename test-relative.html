@@ -17,12 +17,10 @@ var cases = [
   ["http://foo/bar", "", "http://foo/bar"],
   ["http://foo/bar#ref", "", "http://foo/bar"],
   ["http://foo/bar#", "", "http://foo/bar"],
-  /* FIXME (no trimming)
   // Spaces at the ends of the relative path should be ignored.
   ["http://foo/bar", "  another  ", "http://foo/another"],
   ["http://foo/bar", "  .  ", "http://foo/"],
   ["http://foo/bar", " \t ", "http://foo/bar"],
-  */
 
   // Matching schemes without two slashes are treated as relative.
   ["http://host/a", "http:path", "http://host/path"],
@@ -82,9 +80,7 @@ var cases = [
   // Invalid schemes should be treated as relative.
   ["http://foo/bar", "./asd:fgh", "http://foo/asd:fgh"],
   ["http://foo/bar", ":foo", "http://foo/:foo"],
-  /* FIXME no trimming
   ["http://foo/bar", " hello world", "http://foo/hello%20world"],
-  */
   /* MODIFIED
   ["data:asdf", ":foo", ""],
   */

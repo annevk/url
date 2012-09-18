@@ -116,7 +116,7 @@ function URL(url, base) {
   function parse(url, stateOverride) {
     var EOF = undefined,
         state = stateOverride || "scheme start",
-        input = url, // XXX need to trim (but only specific characters)
+        input = url.replace(/^[ \t\r\n\f]+|[ \t\r\n\f]+$/g, ""),
         cursor = 0,
         buffer = "",
         seenAt = false,
@@ -134,7 +134,7 @@ function URL(url, base) {
             return c
           }
           return encodeURIComponent(c)
-        }
+        },
         IDNAToASCII = function (h) {
           // XXX
           return h.toLowerCase()
