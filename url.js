@@ -52,7 +52,7 @@ function URL(url, base) {
       }
     },
     "protocol": {
-      get: function() { return isInvalid ? "" : scheme + ":" },
+      get: function() { return scheme + ":" },
       set: function(_) {
         parse(_ + ":", "scheme start")
       }
@@ -86,7 +86,7 @@ function URL(url, base) {
       }
     },
     "search": {
-      get: function() { return isInvalid || query == null ? "" : "?" + query },
+      get: function() { return isInvalid || !query ? "" : "?" + query },
       set: function(_) {
         if(isInvalid || !isHierarchical()) {
           return
@@ -99,7 +99,7 @@ function URL(url, base) {
       }
     },
     "hash": {
-      get: function() { return isInvalid || fragment == null ? "" : "#" + fragment },
+      get: function() { return isInvalid || !fragment ? "" : "#" + fragment },
       set: function(_) {
         if(isInvalid) {
           return
@@ -266,7 +266,7 @@ function URL(url, base) {
           }
           state = "hierarchical path start"
           continue
-        } else {
+        } else if("\t" != c && "\n" != c && "\r" != c) {
           buffer += c
         }
       } else if("port" == state) {
@@ -330,6 +330,8 @@ function URL(url, base) {
         if(!stateOverride && "#" == c) {
           fragment = ""
           state = "fragment"
+        } else if("?" == c) {
+          query += c
         } else if(EOF != c && "\t" != c && "\n" != c && "\r" != c) {
           query += percentEscape(c)
         }
