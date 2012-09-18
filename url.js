@@ -120,6 +120,7 @@ function URL(url, base) {
         cursor = 0,
         buffer = "",
         seenAt = false,
+        seenBracket = false,
         invalid = function () {
           clear()
           isInvalid = true
@@ -251,7 +252,7 @@ function URL(url, base) {
           buffer += c
         }
       } else if("host" == state || "hostname" == state) {
-        if(":" == c) {
+        if(":" == c && !seenBracket) {
           host = IDNAToASCII(buffer)
           buffer = ""
           if("hostname" == stateOverride) {
@@ -267,6 +268,11 @@ function URL(url, base) {
           state = "hierarchical path start"
           continue
         } else if("\t" != c && "\n" != c && "\r" != c) {
+          if("[" == c) {
+            seenBracket = true
+          } else if("]" == c) {
+            seenBracket = false
+          }
           buffer += c
         }
       } else if("port" == state) {
