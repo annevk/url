@@ -18,6 +18,7 @@ function URL(url, base, encoding) {
       path = [],
       query = "",
       fragment = "",
+      input = url.replace(/^[ \t\r\n\f]+|[ \t\r\n\f]+$/g, ""),
       isInvalid = false,
       isHierarchical = function(s) {
         s = s || scheme
@@ -114,10 +115,9 @@ function URL(url, base, encoding) {
     }
   })
 
-  function parse(url, stateOverride) {
+  function parse(input, stateOverride) {
     var EOF = undefined,
         state = stateOverride || "scheme start",
-        input = url.replace(/^[ \t\r\n\f]+|[ \t\r\n\f]+$/g, ""),
         cursor = 0,
         buffer = "",
         seenAt = false,
@@ -365,5 +365,5 @@ function URL(url, base, encoding) {
       cursor++
     }
   }
-  parse(url)
+  parse(input)
 }
