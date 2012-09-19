@@ -50,30 +50,43 @@ function URL(url, base, encoding) {
       get: function() { return isInvalid ? url : this.protocol + (isHierarchical() ? "//" + (userinfo ? userinfo + "@" : "") + this.host : "") + this.pathname + query + fragment },
       set: function(_) {
         clear()
+        isInvalid = false
         parse(_)
       }
     },
     "protocol": {
       get: function() { return scheme + ":" },
       set: function(_) {
+        if(isInvalid) {
+          return
+        }
         parse(_ + ":", "scheme start")
       }
     },
     "host": {
       get: function() { return isInvalid ? "" : port ? host + ":" + port : host },
       set: function(_) {
+        if(isInvalid || !isHierarchical()) {
+          return
+        }
         parse(_, "host")
       }
     },
     "hostname": {
       get: function() { return host },
       set: function(_) {
+        if(isInvalid || !isHierarchical()) {
+          return
+        }
         parse(_, "hostname")
       }
     },
     "port": {
       get: function() { return port },
       set: function(_) {
+        if(isInvalid || !isHierarchical()) {
+          return
+        }
         parse(_, "port")
       }
     },
