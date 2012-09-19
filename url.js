@@ -2,7 +2,7 @@
  * Does not process domain names or IP addresses.
  * Does not handle encoding for the query parameter.
  */
-function URL(url, base) {
+function URL(url, base, encoding) {
   var hierarchical = {
         "ftp": 21,
         "gopher": 70,
@@ -16,8 +16,8 @@ function URL(url, base) {
       host = "",
       port = "",
       path = [],
-      query = null,
-      fragment = null,
+      query = "",
+      fragment = "",
       isInvalid = false,
       isHierarchical = function(s) {
         s = s || scheme
@@ -29,9 +29,10 @@ function URL(url, base) {
         host = ""
         port = ""
         path = []
-        query = null
-        fragment = null
+        query = ""
+        fragment = ""
       }
+  encoding = encoding || "utf-8"
 
   Object.defineProperties(this, {
     /* implementation detail */
@@ -45,7 +46,7 @@ function URL(url, base) {
 
     /* URL decomposition attributes */
     "href": {
-      get: function() { return isInvalid ? url : this.protocol + (isHierarchical() ? "//" + (userinfo ? userinfo + "@" : "") + this.host : "") + this.pathname + this.search + this.hash },
+      get: function() { return isInvalid ? url : this.protocol + (isHierarchical() ? "//" + (userinfo ? userinfo + "@" : "") + this.host : "") + this.pathname + query + fragment },
       set: function(_) {
         clear()
         parse(_)
@@ -86,12 +87,12 @@ function URL(url, base) {
       }
     },
     "search": {
-      get: function() { return isInvalid || !query ? "" : "?" + query },
+      get: function() { return isInvalid || !query || "?" == query ? "" : query },
       set: function(_) {
         if(isInvalid || !isHierarchical()) {
           return
         }
-        query = ""
+        query = "?"
         if("?" == _[0]) {
           _ = _.substr(1)
         }
@@ -99,12 +100,12 @@ function URL(url, base) {
       }
     },
     "hash": {
-      get: function() { return isInvalid || !fragment ? "" : "#" + fragment },
+      get: function() { return isInvalid || !fragment || "#" == fragment ? "" : fragment },
       set: function(_) {
         if(isInvalid) {
           return
         }
-        fragment = ""
+        fragment = "#"
         if("#" == _[0]) {
           _ = _.substr(1)
         }
@@ -131,6 +132,20 @@ function URL(url, base) {
              unicode < 0x7F &&
              // " # < > ? `
              [0x22, 0x23, 0x3C, 0x3E, 0x3F, 0x60].indexOf(unicode) == -1
+            ) {
+            return c
+          }
+          return encodeURIComponent(c)
+        },
+        percentEscapeQuery = function(c) {
+          // XXX This actually needs to encode c using encoding and then
+          // convert the bytes one-by-one.
+
+          var unicode = c.charCodeAt(0)
+          if(unicode > 0x20 &&
+             unicode < 0x7F &&
+             // " # < > ` (do not escape "?")
+             [0x22, 0x23, 0x3C, 0x3E, 0x60].indexOf(unicode) == -1
             ) {
             return c
           }
@@ -209,7 +224,7 @@ function URL(url, base) {
           host = base._host
           port = base._port
           path = base._path
-          query = ""
+          query = "?"
           state = "query"
         } else if("#" == c) {
           scheme = base._scheme
@@ -217,7 +232,7 @@ function URL(url, base) {
           port = base._port
           path = base._path
           query = base._query
-          fragment = ""
+          fragment = "#"
           state = "fragment"
         } else {
           scheme = base._scheme
@@ -314,7 +329,10 @@ function URL(url, base) {
         }
       } else if("hierarchical path" == state) {
         if(EOF == c || "/" == c || "\\" == c || (!stateOverride && ("?" == c || "#" == c))) {
-          if(".." == buffer) {
+          if(".." == buffer && (EOF == c || "?" == c || "#" == c)) {
+            path.pop()
+            path.push("")
+          } else if(".." == buffer) {
             path.pop()
           } else if("." == buffer && (EOF == c || "?" == c || "#" == c)) {
             path.push("")
@@ -323,10 +341,10 @@ function URL(url, base) {
           }
           buffer = ""
           if("?" == c) {
-            query = ""
+            query = "?"
             state = "query"
           } else if("#" == c) {
-            fragment = ""
+            fragment = "#"
             state = "fragment"
           }
         } else if("\t" != c && "\n" != c && "\r" != c) {
@@ -334,12 +352,10 @@ function URL(url, base) {
         }
       } else if("query" == state) {
         if(!stateOverride && "#" == c) {
-          fragment = ""
+          fragment = "#"
           state = "fragment"
-        } else if("?" == c) {
-          query += c
         } else if(EOF != c && "\t" != c && "\n" != c && "\r" != c) {
-          query += percentEscape(c)
+          query += percentEscapeQuery(c)
         }
       } else if("fragment" == state) {
         if(EOF != c && "\t" != c && "\n" != c && "\r" != c) {
