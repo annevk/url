@@ -306,25 +306,19 @@ function URL(url, base, encoding) {
       } else if("port" == state) {
         if(/[0-9]/.test(c)) {
           buffer += c
-        } else if(EOF == c || "/" == c || "\\" == c || "?" == c || "#" == c) {
+        } else if(EOF == c || "/" == c || "\\" == c || "?" == c || "#" == c || stateOverride) {
           if("" != buffer) {
             var temp = parseInt(buffer, 10)
             if(temp != hierarchical[scheme]) {
               port = temp + ""
             }
             buffer = ""
+          }
+          if(stateOverride) {
+            break
           }
           state = "hierarchical path start"
           continue
-        } else if(stateOverride) {
-          if("" != buffer) {
-            var temp = parseInt(buffer, 10)
-            if(temp != hierarchical[scheme]) {
-              port = temp + ""
-            }
-            buffer = ""
-          }
-          break
         } else {
           invalid()
         }
