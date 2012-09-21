@@ -20,7 +20,8 @@ function URL(url, base, encoding) {
       fragment = "",
       input = url.replace(/^[ \t\r\n\f]+|[ \t\r\n\f]+$/g, ""),
       isInvalid = false,
-      isHierarchical = function(s) {
+      isHierarchical = false,
+      isHierarchicalScheme = function(s) {
         s = s || scheme
         return hierarchical.hasOwnProperty(s)
       },
@@ -32,6 +33,8 @@ function URL(url, base, encoding) {
         path = []
         query = ""
         fragment = ""
+        isInvalid = false
+        isHierarchical = false
       }
   encoding = encoding || "utf-8"
 
@@ -47,10 +50,9 @@ function URL(url, base, encoding) {
 
     /* URL decomposition attributes */
     "href": {
-      get: function() { return isInvalid ? url : this.protocol + (isHierarchical() ? "//" + (userinfo ? userinfo + "@" : "") + this.host : "") + this.pathname + query + fragment },
+      get: function() { return isInvalid ? url : this.protocol + (isHierarchical ? "//" + (userinfo ? userinfo + "@" : "") + this.host : "") + this.pathname + query + fragment },
       set: function(_) {
         clear()
-        isInvalid = false
         parse(_)
       }
     },
@@ -66,7 +68,7 @@ function URL(url, base, encoding) {
     "host": {
       get: function() { return isInvalid ? "" : port ? host + ":" + port : host },
       set: function(_) {
-        if(isInvalid || !isHierarchical()) {
+        if(isInvalid || !isHierarchical) {
           return
         }
         parse(_, "host")
@@ -75,7 +77,7 @@ function URL(url, base, encoding) {
     "hostname": {
       get: function() { return host },
       set: function(_) {
-        if(isInvalid || !isHierarchical()) {
+        if(isInvalid || !isHierarchical) {
           return
         }
         parse(_, "hostname")
@@ -84,16 +86,16 @@ function URL(url, base, encoding) {
     "port": {
       get: function() { return port },
       set: function(_) {
-        if(isInvalid || !isHierarchical()) {
+        if(isInvalid || !isHierarchical) {
           return
         }
         parse(_, "port")
       }
     },
     "pathname": {
-      get: function() { return isInvalid ? "" : isHierarchical() ? "/" + path.join("/") : path[0] },
+      get: function() { return isInvalid ? "" : isHierarchical ? "/" + path.join("/") : path[0] },
       set: function (_) {
-        if(isInvalid || !isHierarchical()) {
+        if(isInvalid || !isHierarchical) {
           return
         }
         path = []
@@ -103,7 +105,7 @@ function URL(url, base, encoding) {
     "search": {
       get: function() { return isInvalid || !query || "?" == query ? "" : query },
       set: function(_) {
-        if(isInvalid || !isHierarchical()) {
+        if(isInvalid || !isHierarchical) {
           return
         }
         query = "?"
@@ -190,7 +192,8 @@ function URL(url, base, encoding) {
           buffer = ""
           if(stateOverride) {
             break
-          } else if(isHierarchical()) {
+          } else if(isHierarchicalScheme(scheme)) {
+            isHierarchical = true
             if(base && base._scheme == scheme) {
               state = "hierarchical"
             } else {
@@ -206,13 +209,14 @@ function URL(url, base, encoding) {
           continue
         }
       } else if("no scheme" == state) {
-        if(!base || !(isHierarchical(base._scheme))) {
+        if(!base || !(isHierarchicalScheme(base._scheme))) {
           invalid()
         } else {
           state = "hierarchical"
           continue
         }
       } else if("hierarchical" == state) {
+        isHierarchical = true
         if(c == EOF) {
           scheme = base._scheme
           host = base._host
