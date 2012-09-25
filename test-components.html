@@ -123,6 +123,7 @@ var cases = [
   ["/a/%2f/c",                                ["http:","example.org","","/a/%2f/c","",""]],
 
   ["#\u03B2",                                 ["http:","example.org","","/foo/bar","","#\u03B2"]],
+  ["data:text/html,test#test",     ["data:", "", "", "text/html,test", "", "#test"]],
 ]
 
 function setBase(base) {

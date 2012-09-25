@@ -329,6 +329,7 @@ function URL(url, base, encoding) {
       } else if("path" == state) {
         path.push("")
         if(!stateOverride && "#" == c) {
+          fragment = "#"
           state = "fragment"
         } else if(EOF != c) {
           path[0] += percentEscape(c)
