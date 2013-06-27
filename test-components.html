@@ -26,7 +26,8 @@ var cases = [
   ["http://f:00000000000000000000080/c",     ["http:","f","","/c","",""]],
   ["http://f:b/c",                           [":","","","","",""]],
   ["http://f: /c",                           [":","","","","",""]],
-  ["http://f:\n/c",                         [":","","","","",""]],
+  /* MODIFIED \n is ignored */
+  ["http://f:\n/c",                         ["http:","f","","/c","",""]],
   ["http://f:fifty-two/c",                   [":","","","","",""]],
   /* MODIFIED scheme ":" to "http:", host "" to "f", port "0" to "999999", and path "" to "/c" */
   ["http://f:999999/c",                      ["http:","f","999999","/c","",""]],

@@ -3,7 +3,7 @@
  * Does not handle encoding for the query parameter.
  */
 function URL(url, base, encoding) {
-  var hierarchical = {
+  var relative = {
         "ftp": 21,
         "gopher": 70,
         "http": 80,
@@ -12,6 +12,7 @@ function URL(url, base, encoding) {
         "wss": 443
       },
       scheme = "",
+      schemeData = "",
       userinfo = "",
       host = "",
       port = "",
@@ -20,13 +21,14 @@ function URL(url, base, encoding) {
       fragment = "",
       input = url.replace(/^[ \t\r\n\f]+|[ \t\r\n\f]+$/g, ""),
       isInvalid = false,
-      isHierarchical = false,
-      isHierarchicalScheme = function(s) {
+      isRelative = false,
+      isRelativeScheme = function(s) {
         s = s || scheme
-        return hierarchical.hasOwnProperty(s)
+        return relative.hasOwnProperty(s)
       },
       clear = function() {
         scheme = ""
+        schemeData = ""
         userinfo = ""
         host = ""
         port = ""
@@ -34,7 +36,7 @@ function URL(url, base, encoding) {
         query = ""
         fragment = ""
         isInvalid = false
-        isHierarchical = false
+        isRelative = false
       }
   encoding = encoding || "utf-8"
 
@@ -50,7 +52,7 @@ function URL(url, base, encoding) {
 
     /* URL decomposition attributes */
     "href": {
-      get: function() { return isInvalid ? url : this.protocol + (isHierarchical ? "//" + (userinfo ? userinfo + "@" : "") + this.host : "") + this.pathname + query + fragment },
+      get: function() { return isInvalid ? url : this.protocol + (isRelative ? "//" + (userinfo ? userinfo + "@" : "") + this.host : "") + this.pathname + query + fragment },
       set: function(_) {
         clear()
         parse(_)
@@ -68,7 +70,7 @@ function URL(url, base, encoding) {
     "host": {
       get: function() { return isInvalid ? "" : port ? host + ":" + port : host },
       set: function(_) {
-        if(isInvalid || !isHierarchical) {
+        if(isInvalid || !isRelative) {
           return
         }
         parse(_, "host")
@@ -77,7 +79,7 @@ function URL(url, base, encoding) {
     "hostname": {
       get: function() { return host },
       set: function(_) {
-        if(isInvalid || !isHierarchical) {
+        if(isInvalid || !isRelative) {
           return
         }
         parse(_, "hostname")
@@ -86,26 +88,26 @@ function URL(url, base, encoding) {
     "port": {
       get: function() { return port },
       set: function(_) {
-        if(isInvalid || !isHierarchical) {
+        if(isInvalid || !isRelative) {
           return
         }
         parse(_, "port")
       }
     },
     "pathname": {
-      get: function() { return isInvalid ? "" : isHierarchical ? "/" + path.join("/") : path[0] },
+      get: function() { return isInvalid ? "" : isRelative ? "/" + path.join("/") : schemeData },
       set: function (_) {
-        if(isInvalid || !isHierarchical) {
+        if(isInvalid || !isRelative) {
           return
         }
         path = []
-        parse(_, "hierarchical path start")
+        parse(_, "relative path start")
       }
     },
     "search": {
       get: function() { return isInvalid || !query || "?" == query ? "" : query },
       set: function(_) {
-        if(isInvalid || !isHierarchical) {
+        if(isInvalid || !isRelative) {
           return
         }
         query = "?"
@@ -132,6 +134,8 @@ function URL(url, base, encoding) {
 
   function parse(input, stateOverride) {
     var EOF = undefined,
+        ALPHA = /[a-zA-Z]/,
+        ALPHANUMERIC = /[a-zA-Z0-9\+\-\.]/,
         state = stateOverride || "scheme start",
         cursor = 0,
         buffer = "",
@@ -140,6 +144,10 @@ function URL(url, base, encoding) {
         invalid = function () {
           clear()
           isInvalid = true
+        },
+        errors = [],
+        err = function(message) {
+          errors.push(message)
         },
         percentEscape = function (c) {
           var unicode = c.charCodeAt(0)
@@ -174,77 +182,99 @@ function URL(url, base, encoding) {
     while((input[cursor-1] != EOF || cursor == 0) && !isInvalid) {
       var c = input[cursor]
       if("scheme start" == state) {
-        if(c && /[a-zA-Z]/.test(c)) {
-          buffer += c.toLowerCase()
+        if(c && ALPHA.test(c)) {
+          buffer += c.toLowerCase() // ASCII-safe
           state = "scheme"
         } else if(!stateOverride) {
           buffer = ""
           state = "no scheme"
           continue
         } else {
+          err("Invalid scheme.")
           break
         }
       } else if("scheme" == state) {
-        if(c && /[a-zA-Z0-9\+\-\.]/.test(c)) {
+        if(c && ALPHANUMERIC.test(c)) {
           buffer += c.toLowerCase() // ASCII-safe
         } else if(":" == c) {
           scheme = buffer
           buffer = ""
           if(stateOverride) {
             break
-          } else if(isHierarchicalScheme(scheme)) {
-            isHierarchical = true
-            if(base && base._scheme == scheme) {
-              state = "hierarchical"
-            } else {
-              state = "authority start"
-            }
-          } else {
-            state = "path"
           }
-        } else {
+          if(isRelativeScheme(scheme)) {
+            isRelative = true
+          }
+          if("file" == scheme) {
+            state = "relative"
+          } else if(isRelative && base && base._scheme == scheme) {
+            state = "relative or authority"
+          } else if(isRelative) {
+            state = "authority first slash"
+          } else {
+            state = "scheme data"
+          }
+        } else if(!stateOverride) {
           buffer = ""
           cursor = 0
           state = "no scheme"
           continue
+        } else if(EOF == c) {
+          break
+        } else {
+          err("Code point not allowed in scheme: " + c)
+          break
+        }
+      } else if("scheme data" == state) {
+        if("?" == c) {
+          query = "?"
+          state = "query"
+        } else if("#" == c) {
+          fragment = "#"
+          state = "fragment"
+        } else {
+          // XXX error handling
+          if(EOF != c && "\t" != c && "\n" != c && "\r" != c) {
+            schemeData += percentEscape(c)
+          }
         }
       } else if("no scheme" == state) {
-        if(!base || !(isHierarchicalScheme(base._scheme))) {
+        if(!base || !(isRelativeScheme(base._scheme))) {
+          err("Missing scheme.")
           invalid()
         } else {
-          state = "hierarchical"
+          state = "relative"
           continue
         }
-      } else if("hierarchical" == state) {
-        isHierarchical = true
-        if(c == EOF) {
+      } else if("relative or authority" == state) {
+        if("/" == c && "/" == input[cursor+1]) {
+          state = "authority ignore slashes"
+        } else {
+          err("Expected /, got: " + c)
+          state = "relative"
+          continue
+        }
+      } else if("relative" == state) {
+        isRelative = true
+        if("file" != scheme)
           scheme = base._scheme
+        if(EOF == c) {
           host = base._host
           port = base._port
           path = base._path
           query = base._query
           break
         } else if("/" == c || "\\" == c) {
-          var nextC = input[cursor+1]
-          if("/" == nextC || "\\" == nextC) {
-            scheme = base._scheme
-            state = "authority start"
-          } else {
-            scheme = base._scheme
-            host = base._host
-            port = base._port
-            state = "hierarchical path start"
-            continue
-          }
+          if("\\" == c)
+            err("\\ is an invalid code point.")
+          state = "relative slash"
         } else if("?" == c) {
-          scheme = base._scheme
           host = base._host
           port = base._port
           path = base._path
           query = "?"
           state = "query"
         } else if("#" == c) {
-          scheme = base._scheme
           host = base._host
           port = base._port
           path = base._path
@@ -252,18 +282,49 @@ function URL(url, base, encoding) {
           fragment = "#"
           state = "fragment"
         } else {
-          scheme = base._scheme
           host = base._host
           port = base._port
           path = base._path
           path.pop()
-          state = "hierarchical path start"
+          state = "relative path"
           continue
         }
-      } else if("authority start" == state) {
+      } else if("relative slash" == state) {
+        if("/" == c || "\\" == c) {
+          if("\\" == c)
+            err("\\ is an invalid code point.")
+          if("file" == scheme)
+            state = "file host"
+          else
+            state = "authority ignore slashes"
+        } else {
+          if("file" != scheme) {
+            host = base._host
+            port = base._port
+          }
+          state = "relative path"
+          continue
+        }
+      } else if("authority first slash" == state) {
+        if("/" == c) {
+          state = "authority second slash"
+        } else {
+          err("Expected '/', got: " + c)
+          state = "authority ignore slashes"
+          continue
+        }
+      } else if("authority second slash" == state) {
+        state = "authority ignore slashes"
+        if("/" != c) {
+          err("Expected '/', got: " + c)
+          continue
+        }
+      } else if("authority ignore slashes" == state) {
         if("/" != c && "\\" != c) {
           state = "authority"
           continue
+        } else {
+          err("Expected authority, got: " + c)
         }
       } else if("authority" == state) {
         if("@" == c) {
@@ -272,6 +333,7 @@ function URL(url, base, encoding) {
           }
           seenAt = true
           for(var i = 0; i < buffer.length; i++) {
+            // XXX requires cleanup
             userinfo += percentEscape(buffer[i])
           }
           buffer = ""
@@ -283,21 +345,24 @@ function URL(url, base, encoding) {
         } else {
           buffer += c
         }
+      } else if("file host" == state) {
+        alert("oops")
       } else if("host" == state || "hostname" == state) {
         if(":" == c && !seenBracket) {
+          // XXX host parsing
           host = IDNAToASCII(buffer)
           buffer = ""
+          state = "port"
           if("hostname" == stateOverride) {
             break
           }
-          state = "port"
         } else if(EOF == c || "/" == c || "\\" == c || "?" == c || "#" == c) {
           host = IDNAToASCII(buffer)
           buffer = ""
+          state = "relative path start"
           if(stateOverride) {
             break
           }
-          state = "hierarchical path start"
           continue
         } else if("\t" != c && "\n" != c && "\r" != c) {
           if("[" == c) {
@@ -306,6 +371,8 @@ function URL(url, base, encoding) {
             seenBracket = false
           }
           buffer += c
+        } else {
+          err("Invalid code point in host/hostname: " + c)
         }
       } else if("port" == state) {
         if(/[0-9]/.test(c)) {
@@ -313,7 +380,7 @@ function URL(url, base, encoding) {
         } else if(EOF == c || "/" == c || "\\" == c || "?" == c || "#" == c || stateOverride) {
           if("" != buffer) {
             var temp = parseInt(buffer, 10)
-            if(temp != hierarchical[scheme]) {
+            if(temp != relative[scheme]) {
               port = temp + ""
             }
             buffer = ""
@@ -321,25 +388,21 @@ function URL(url, base, encoding) {
           if(stateOverride) {
             break
           }
-          state = "hierarchical path start"
+          state = "relative path start"
           continue
+        } else if("\t" == c || "\n" == c || "\r" == c) {
+          err("Invalid code point in port: " + c)
         } else {
           invalid()
         }
-      } else if("path" == state) {
-        path.push("")
-        if(!stateOverride && "#" == c) {
-          fragment = "#"
-          state = "fragment"
-        } else if(EOF != c) {
-          path[0] += percentEscape(c)
-        }
-      } else if("hierarchical path start" == state) {
-        state = "hierarchical path"
+      } else if("relative path start" == state) {
+        if("\\" == c)
+          err("'\\' not allowed in path.")
+        state = "relative path"
         if("/" != c && "\\" != c) {
           continue
         }
-      } else if("hierarchical path" == state) {
+      } else if("relative path" == state) {
         if(EOF == c || "/" == c || "\\" == c || (!stateOverride && ("?" == c || "#" == c))) {
           if(".." == buffer && (EOF == c || "?" == c || "#" == c)) {
             path.pop()
