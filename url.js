@@ -346,7 +346,19 @@ function URL(url, base, encoding) {
           buffer += c
         }
       } else if("file host" == state) {
-        alert("oops")
+        if(EOF == c || "/" == c || "\\" == c || "?" == c || "#" == c) {
+          if(ALPHA.test(buffer[0]) && (buffer[1] == ":" || buffer[1] == "|")) {
+            state = "relative path"
+          } else {
+            host = IDNAToASCII(buffer)
+            buffer = ""
+            state = "relative path start"
+          }
+        } else if("\t" == c || "\n" == c || "\r" == c) {
+          err("Invalid whitespace in file host.")
+        } else {
+          buffer += c
+        }
       } else if("host" == state || "hostname" == state) {
         if(":" == c && !seenBracket) {
           // XXX host parsing
