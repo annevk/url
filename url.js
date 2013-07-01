@@ -13,7 +13,8 @@ function URL(url, base, encoding) {
       },
       scheme = "",
       schemeData = "",
-      userinfo = "",
+      username = "",
+      password = null,
       host = "",
       port = "",
       path = [],
@@ -29,7 +30,8 @@ function URL(url, base, encoding) {
       clear = function() {
         scheme = ""
         schemeData = ""
-        userinfo = ""
+        username = ""
+        password = null
         host = ""
         port = ""
         path = []
@@ -43,7 +45,8 @@ function URL(url, base, encoding) {
   Object.defineProperties(this, {
     /* implementation detail */
     "_scheme": { get: function() { return scheme } },
-    "_userinfo": { get: function() { return userinfo } },
+    "_username": { get: function() { return username } },
+    "_password": { get: function() { return password } },
     "_host": { get: function() { return host } },
     "_port": { get: function() { return port } },
     "_path": { get: function() { return path } },
@@ -52,7 +55,7 @@ function URL(url, base, encoding) {
 
     /* URL decomposition attributes */
     "href": {
-      get: function() { return isInvalid ? url : this.protocol + (isRelative ? "//" + (userinfo ? userinfo + "@" : "") + this.host : "") + this.pathname + query + fragment },
+      get: function() { return isInvalid ? url : this.protocol + (isRelative ? "//" + (("" != username || null != password) ? username + (null != password ? ":" + password : "") + "@" : "") + this.host : "") + this.pathname + query + fragment },
       set: function(_) {
         clear()
         parse(_)
@@ -329,12 +332,22 @@ function URL(url, base, encoding) {
       } else if("authority" == state) {
         if("@" == c) {
           if(seenAt) {
-            userinfo += "%40"
+            err("@ already seen.")
+            buffer += "%40"
           }
           seenAt = true
           for(var i = 0; i < buffer.length; i++) {
-            // XXX requires cleanup
-            userinfo += percentEscape(buffer[i])
+            if("\t" == c || "\n" == c || "\r" == c) {
+              err("Invalid whitespace in authority.")
+              continue
+            }
+            // XXX check URL code points
+            if(":" == c && null == password) {
+              password = ""
+              continue
+            }
+            var tempC = percentEscape(buffer[i])
+            ;(null != password) ? password += tempC : username += tempC
           }
           buffer = ""
         } else if(EOF == c || "/" == c || "\\" == c || "?" == c || "#" == c) {
