@@ -42,6 +42,7 @@ var cases = [
     ["http://a:@www.apple.com", "http://a@www.apple.com/", ["http:","www.apple.com","","/","",""]],
 
     // Some tests for multiple @-signs. WebKit treats these URLs as invalid, while Gecko allows '@' in userinfo, searching for the last instance in authority as a delimiter.
+    /* URL Standard: follow Gecko
     ["http://a:b@www.@pple.com/p@th", "http://a:b@www.@pple.com/p@th", [":","","","","",""]],
     ["http://www.@@pple.com", "http://www.@@pple.com", [":","","","","",""]],
     ["http://@@pple.com", "http://@@pple.com", [":","","","","",""]],
@@ -52,6 +53,7 @@ var cases = [
     ["http:@:b@www.apple.com", "http:@:b@www.apple.com", [":","","","","",""]],
     ["http:/@:b@www.apple.com", "http:/@:b@www.apple.com", [":","","","","",""]],
     ["http://@:b@www.apple.com", "http://@:b@www.apple.com", [":","","","","",""]],
+    */
 
     // Gecko escapes '.' in username, WebKit does not.
     ["http://www.@pple.com", "http://www.@pple.com/", ["http:","pple.com","","/","",""]],
@@ -67,10 +69,12 @@ var cases = [
     // Host is empty, but hostname is not, so the resulting parsed URL string is not particularly ambiguous.
     // Gecko builds the same parsed URL string, although its components are different.
     // FIXME: Unsure why we are getting a "0" as port here, but it probably doesn't matter for such an edge case.
+    /* URL Standard: no host means failure
     ["http:@:/www.apple.com", "http://:/www.apple.com", ["http:","","0","/www.apple.com","",""]],
     ["http:/@:/www.apple.com", "http://:/www.apple.com", ["http:","","0","/www.apple.com","",""]],
     ["http://@:/www.apple.com", "http://:/www.apple.com", ["http:","","0","/www.apple.com","",""]],
     ["http:@:80/www.apple.com", "http://:80/www.apple.com", ["http:","","80","/www.apple.com","",""]],
+    */
 ];
 
 function setBase(base) {
@@ -91,8 +95,7 @@ function compare(url, expected) {
 }
 
 function test(input, expected) {
-  var base = "http://example.org/foo/bar",
-      url = new URL(input, new URL("http://example.org/foo/bar"))
+  url = new URL(input)
   if(url.protocol != expected[0] ||
      url.hostname != expected[1] ||
      url.port != expected[2] ||
@@ -102,7 +105,7 @@ function test(input, expected) {
     document.write("Got: " + url.protocol + "," + url.hostname + "," + url.port + "," + url.pathname + "," + url.search + "," + url.hash + ", expected: " + expected + ", for input:" + input + "<br>")
   }
 
-  url = bURL(input, base)
+  url = bURL(input)
   if(url.protocol != expected[0] ||
      url.hostname != expected[1] ||
      url.port != expected[2] ||

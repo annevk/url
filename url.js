@@ -178,6 +178,9 @@ function URL(url, base, encoding) {
           return encodeURIComponent(c)
         },
         IDNAToASCII = function (h) {
+          if("" == h) {
+            invalid()
+          }
           // XXX
           return h.toLowerCase()
         }
