@@ -5,6 +5,7 @@
 function URL(url, base, encoding) {
   var relative = {
         "ftp": 21,
+        "file" : 0,
         "gopher": 70,
         "http": 80,
         "https": 443,
@@ -288,21 +289,30 @@ function URL(url, base, encoding) {
           fragment = "#"
           state = "fragment"
         } else {
-          host = base._host
-          port = base._port
-          path = base._path
-          path.pop()
+          var nextC = input[cursor+1]
+          var nextNextC = input[cursor+2]
+          if(
+            "file" != scheme || !ALPHA.test(c) ||
+            (nextC != ":" && nextC != "|") ||
+            (EOF != nextNextC && "/" != nextNextC && "\\" != nextNextC && "?" != nextNextC && "#" != nextNextC)) {
+            host = base._host
+            port = base._port
+            path = base._path
+            path.pop()
+          }
           state = "relative path"
           continue
         }
       } else if("relative slash" == state) {
         if("/" == c || "\\" == c) {
-          if("\\" == c)
+          if("\\" == c) {
             err("\\ is an invalid code point.")
-          if("file" == scheme)
+          }
+          if("file" == scheme) {
             state = "file host"
-          else
+          } else {
             state = "authority ignore slashes"
+          }
         } else {
           if("file" != scheme) {
             host = base._host
@@ -363,13 +373,16 @@ function URL(url, base, encoding) {
         }
       } else if("file host" == state) {
         if(EOF == c || "/" == c || "\\" == c || "?" == c || "#" == c) {
-          if(ALPHA.test(buffer[0]) && (buffer[1] == ":" || buffer[1] == "|")) {
+          if(buffer.length == 2 && ALPHA.test(buffer[0]) && (buffer[1] == ":" || buffer[1] == "|")) {
             state = "relative path"
+          } else if(buffer.length == 0) {
+            state = "relative path start"
           } else {
             host = IDNAToASCII(buffer)
             buffer = ""
             state = "relative path start"
           }
+          continue
         } else if("\t" == c || "\n" == c || "\r" == c) {
           err("Invalid whitespace in file host.")
         } else {
@@ -432,14 +445,20 @@ function URL(url, base, encoding) {
         }
       } else if("relative path" == state) {
         if(EOF == c || "/" == c || "\\" == c || (!stateOverride && ("?" == c || "#" == c))) {
-          if(".." == buffer && (EOF == c || "?" == c || "#" == c)) {
+          if("\\" == c) {
+            err("\\ not allowed in relative path.")
+          }
+          if(".." == buffer) {
             path.pop()
-            path.push("")
-          } else if(".." == buffer) {
+            if("/" != c && "\\" != c) {
+              path.push("")
+            }
+          } else if("." == buffer && "/" != c && "\\" != c) {
             path.pop()
-          } else if("." == buffer && (EOF == c || "?" == c || "#" == c)) {
-            path.push("")
           } else if("." != buffer) {
+            if("file" == scheme && path.length == 0 && buffer.length == 2 && ALPHA.test(buffer[0]) && buffer[1] == "|") {
+              buffer = buffer[0] + ":"
+            }
             path.push(buffer)
           }
           buffer = ""
@@ -450,6 +469,7 @@ function URL(url, base, encoding) {
             fragment = "#"
             state = "fragment"
           }
+        // XXX %2E / %2e normalization
         } else if("\t" != c && "\n" != c && "\r" != c) {
           buffer += percentEscape(c)
         }
