@@ -9,37 +9,37 @@ http://trac.webkit.org/browser/trunk/LayoutTests/fast/url/segments-userinfo-vs-h
 <script>
 var cases = [
     // These cases currently match between WebKit and Gecko, so the results should probably never change.
-    ["http:@www.apple.com", "http://www.apple.com/", ["http:","www.apple.com","","/","",""]],
-    ["http:/@www.apple.com", "http://www.apple.com/", ["http:","www.apple.com","","/","",""]],
-    ["http://@www.apple.com", "http://www.apple.com/", ["http:","www.apple.com","","/","",""]],
-    ["http:a:b@www.apple.com", "http://a:b@www.apple.com/", ["http:","www.apple.com","","/","",""]],
-    ["http:/a:b@www.apple.com", "http://a:b@www.apple.com/", ["http:","www.apple.com","","/","",""]],
-    ["http://a:b@www.apple.com", "http://a:b@www.apple.com/", ["http:","www.apple.com","","/","",""]],
+    ["http:@www.example.com", "http://www.example.com/", ["http:","www.example.com","","/","",""]],
+    ["http:/@www.example.com", "http://www.example.com/", ["http:","www.example.com","","/","",""]],
+    ["http://@www.example.com", "http://www.example.com/", ["http:","www.example.com","","/","",""]],
+    ["http:a:b@www.example.com", "http://a:b@www.example.com/", ["http:","www.example.com","","/","",""]],
+    ["http:/a:b@www.example.com", "http://a:b@www.example.com/", ["http:","www.example.com","","/","",""]],
+    ["http://a:b@www.example.com", "http://a:b@www.example.com/", ["http:","www.example.com","","/","",""]],
     ["http://@pple.com", "http://pple.com/", ["http:","pple.com","","/","",""]],
-    ["http::b@www.apple.com", "http://:b@www.apple.com/", ["http:","www.apple.com","","/","",""]],
-    ["http:/:b@www.apple.com", "http://:b@www.apple.com/", ["http:","www.apple.com","","/","",""]],
-    ["http://:b@www.apple.com", "http://:b@www.apple.com/", ["http:","www.apple.com","","/","",""]],
+    ["http::b@www.example.com", "http://:b@www.example.com/", ["http:","www.example.com","","/","",""]],
+    ["http:/:b@www.example.com", "http://:b@www.example.com/", ["http:","www.example.com","","/","",""]],
+    ["http://:b@www.example.com", "http://:b@www.example.com/", ["http:","www.example.com","","/","",""]],
 
     // Gecko and WebKit both treat this URLs as invalid, but Gecko reports "http:" as protocol.
-    ["http:/:@/www.apple.com", "http:/:@/www.apple.com", [":","","","","",""]],
+    ["http:/:@/www.example.com", "http:/:@/www.example.com", [":","","","","",""]],
 
     // HTTP URLs with an empty host are invalid, because otherwise, there is just too much risk that another parsing pass (possibly by a network layer with a subtly different algorithm) would treat path as hostname.
-    ["http://user@/www.apple.com", "http://user@/www.apple.com", [":","","","","",""]], // Regression test for <https://bugs.webkit.org/show_bug.cgi?id=57220>.
-    ["http:@/www.apple.com", "http:@/www.apple.com", [":","","","","",""]], // Regression test for <https://bugs.webkit.org/show_bug.cgi?id=104919>.
-    ["http:/@/www.apple.com", "http:/@/www.apple.com", [":","","","","",""]],
-    ["http://@/www.apple.com", "http://@/www.apple.com", [":","","","","",""]],
-    ["https:@/www.apple.com", "https:@/www.apple.com", [":","","","","",""]], // Regression test for <https://bugs.webkit.org/show_bug.cgi?id=104919>.
-    ["http:a:b@/www.apple.com", "http:a:b@/www.apple.com", [":","","","","",""]],
-    ["http:/a:b@/www.apple.com", "http:/a:b@/www.apple.com", [":","","","","",""]],
-    ["http://a:b@/www.apple.com", "http://a:b@/www.apple.com", [":","","","","",""]],
+    ["http://user@/www.example.com", "http://user@/www.example.com", [":","","","","",""]], // Regression test for <https://bugs.webkit.org/show_bug.cgi?id=57220>.
+    ["http:@/www.example.com", "http:@/www.example.com", [":","","","","",""]], // Regression test for <https://bugs.webkit.org/show_bug.cgi?id=104919>.
+    ["http:/@/www.example.com", "http:/@/www.example.com", [":","","","","",""]],
+    ["http://@/www.example.com", "http://@/www.example.com", [":","","","","",""]],
+    ["https:@/www.example.com", "https:@/www.example.com", [":","","","","",""]], // Regression test for <https://bugs.webkit.org/show_bug.cgi?id=104919>.
+    ["http:a:b@/www.example.com", "http:a:b@/www.example.com", [":","","","","",""]],
+    ["http:/a:b@/www.example.com", "http:/a:b@/www.example.com", [":","","","","",""]],
+    ["http://a:b@/www.example.com", "http://a:b@/www.example.com", [":","","","","",""]],
 
     // Gecko treats this URL as relative. WebKit treats it as invalid, because of empty host.
-    ["http::@/www.apple.com", "http::@/www.apple.com", [":","","","","",""]],
+    ["http::@/www.example.com", "http::@/www.example.com", [":","","","","",""]],
 
     // Empty password. Gecko still adds a ':', WebKit does not.
-    ["http:a:@www.apple.com", "http://a@www.apple.com/", ["http:","www.apple.com","","/","",""]],
-    ["http:/a:@www.apple.com", "http://a@www.apple.com/", ["http:","www.apple.com","","/","",""]],
-    ["http://a:@www.apple.com", "http://a@www.apple.com/", ["http:","www.apple.com","","/","",""]],
+    ["http:a:@www.example.com", "http://a@www.example.com/", ["http:","www.example.com","","/","",""]],
+    ["http:/a:@www.example.com", "http://a@www.example.com/", ["http:","www.example.com","","/","",""]],
+    ["http://a:@www.example.com", "http://a@www.example.com/", ["http:","www.example.com","","/","",""]],
 
     // Some tests for multiple @-signs. WebKit treats these URLs as invalid, while Gecko allows '@' in userinfo, searching for the last instance in authority as a delimiter.
     /* URL Standard: follow Gecko
@@ -47,33 +47,33 @@ var cases = [
     ["http://www.@@pple.com", "http://www.@@pple.com", [":","","","","",""]],
     ["http://@@pple.com", "http://@@pple.com", [":","","","","",""]],
     ["http://@@@pple.com", "http://@@@pple.com", [":","","","","",""]],
-    ["http:@@/www.apple.com", "http:@@/www.apple.com", [":","","","","",""]],
-    ["http:/@@/www.apple.com", "http:/@@/www.apple.com", [":","","","","",""]],
-    ["http://@@/www.apple.com", "http://@@/www.apple.com", [":","","","","",""]],
-    ["http:@:b@www.apple.com", "http:@:b@www.apple.com", [":","","","","",""]],
-    ["http:/@:b@www.apple.com", "http:/@:b@www.apple.com", [":","","","","",""]],
-    ["http://@:b@www.apple.com", "http://@:b@www.apple.com", [":","","","","",""]],
+    ["http:@@/www.example.com", "http:@@/www.example.com", [":","","","","",""]],
+    ["http:/@@/www.example.com", "http:/@@/www.example.com", [":","","","","",""]],
+    ["http://@@/www.example.com", "http://@@/www.example.com", [":","","","","",""]],
+    ["http:@:b@www.example.com", "http:@:b@www.example.com", [":","","","","",""]],
+    ["http:/@:b@www.example.com", "http:/@:b@www.example.com", [":","","","","",""]],
+    ["http://@:b@www.example.com", "http://@:b@www.example.com", [":","","","","",""]],
     */
 
     // Gecko escapes '.' in username, WebKit does not.
     ["http://www.@pple.com", "http://www.@pple.com/", ["http:","pple.com","","/","",""]],
 
-    // Invalid in WebKit. Gecko thinks that hostname is ":www.apple.com", which doesn't seem like a good idea.
-    ["http:@:www.apple.com", "http:@:www.apple.com", [":","","","","",""]],
-    ["http:/@:www.apple.com", "http:/@:www.apple.com", [":","","","","",""]],
-    ["http://@:www.apple.com", "http://@:www.apple.com", [":","","","","",""]],
+    // Invalid in WebKit. Gecko thinks that hostname is ":www.example.com", which doesn't seem like a good idea.
+    ["http:@:www.example.com", "http:@:www.example.com", [":","","","","",""]],
+    ["http:/@:www.example.com", "http:/@:www.example.com", [":","","","","",""]],
+    ["http://@:www.example.com", "http://@:www.example.com", [":","","","","",""]],
 
     // Invalid in Gecko. WebKit just treats this as a URL with empty username and password, which appears to make sense.
-    ["http://:@www.apple.com", "http://www.apple.com/", ["http:","www.apple.com","","/","",""]],
+    ["http://:@www.example.com", "http://www.example.com/", ["http:","www.example.com","","/","",""]],
 
     // Host is empty, but hostname is not, so the resulting parsed URL string is not particularly ambiguous.
     // Gecko builds the same parsed URL string, although its components are different.
     // FIXME: Unsure why we are getting a "0" as port here, but it probably doesn't matter for such an edge case.
     /* URL Standard: no host means failure
-    ["http:@:/www.apple.com", "http://:/www.apple.com", ["http:","","0","/www.apple.com","",""]],
-    ["http:/@:/www.apple.com", "http://:/www.apple.com", ["http:","","0","/www.apple.com","",""]],
-    ["http://@:/www.apple.com", "http://:/www.apple.com", ["http:","","0","/www.apple.com","",""]],
-    ["http:@:80/www.apple.com", "http://:80/www.apple.com", ["http:","","80","/www.apple.com","",""]],
+    ["http:@:/www.example.com", "http://:/www.example.com", ["http:","","0","/www.example.com","",""]],
+    ["http:/@:/www.example.com", "http://:/www.example.com", ["http:","","0","/www.example.com","",""]],
+    ["http://@:/www.example.com", "http://:/www.example.com", ["http:","","0","/www.example.com","",""]],
+    ["http:@:80/www.example.com", "http://:80/www.example.com", ["http:","","80","/www.example.com","",""]],
     */
 ];
 

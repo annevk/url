@@ -1,0 +1,117 @@
+<!doctype html>
+<!--
+Original:
+
+http://trac.webkit.org/browser/trunk/LayoutTests/fast/url/script-tests/relative.js
+-->
+<base id=base>
+<script src=url.js></script>
+<script>
+
+var cases = [
+  ["http://www.google.com/foo?bar=baz#", "http://www.google.com/foo?bar=baz#"],
+  ["http://www.google.com/foo?bar=baz# \u00bb", "http://www.google.com/foo?bar=baz# \u00bb"],
+  ["http://[www.google.com]/", "http://[www.google.com]/"],
+  ["http://www.google.com", "http://www.google.com/"],
+  // Disabled because whitespace gets treated different in this API.
+  // ["ht\ttp:@www.google.com:80/;p?#", "ht%09tp://www.google.com:80/;p?#"],
+
+  // ??? (standard preserves password) ["http:////////user:@google.com:99?foo", "http://user@google.com:99/?foo"],
+  // Disabled because this gets treated as a relative URL.
+  // ["www.google.com", ":www.google.com/"],
+  // ??? (this is wrong) ["http://192.0x00A80001", "http://192.168.0.1/"],
+  // added:
+  ["http://192.0x00A80001", "http://192.0x00a80001/"],
+  // modified:
+  ["http://www/foo%2Ehtml", "http://www/foo%2Ehtml"],
+  // added
+  ["http://www/foo/%2E/html", "http://www/foo/html"],
+  ["http://user:pass@/", "http://user:pass@/"],
+  ["http://%25DOMAIN:foobar@foodomain.com/", "http://%25DOMAIN:foobar@foodomain.com/"],
+  // Backslashes should get converted to forward slashes.
+  ["http:\\\\www.google.com\\foo", "http://www.google.com/foo"],
+  // Busted refs shouldn't make the whole thing fail.
+  // ??? (refs/fragments need study) ["http://www.google.com/asdf#\ud800", "http://www.google.com/asdf#\uFFFD"],
+  // Basic port tests.
+  ["http://foo:80/", "http://foo/"],
+  ["http://foo:81/", "http://foo:81/"],
+  ["httpa://foo:80/", "httpa://foo:80/"],
+  ["http://foo:-80/", "http://foo:-80/"],
+  ["https://foo:443/", "https://foo/"],
+  ["https://foo:80/", "https://foo:80/"],
+  ["ftp://foo:21/", "ftp://foo/"],
+  ["ftp://foo:80/", "ftp://foo:80/"],
+  ["gopher://foo:70/", "gopher://foo/"],
+  ["gopher://foo:443/", "gopher://foo:443/"],
+  ["ws://foo:80/", "ws://foo/"],
+  ["ws://foo:81/", "ws://foo:81/"],
+  ["ws://foo:443/", "ws://foo:443/"],
+  ["ws://foo:815/", "ws://foo:815/"],
+  ["wss://foo:80/", "wss://foo:80/"],
+  ["wss://foo:81/", "wss://foo:81/"],
+  ["wss://foo:443/", "wss://foo/"],
+  ["wss://foo:815/", "wss://foo:815/"],
+  ["http:/example.com/", "http://example.com/"],
+  ["ftp:/example.com/", "ftp://example.com/"],
+  ["https:/example.com/", "https://example.com/"],
+  ["madeupscheme:/example.com/", "madeupscheme:/example.com/"],
+  // removed expected "localhost"
+  ["file:/example.com/", "file:///example.com/"],
+  ["ftps:/example.com/", "ftps:/example.com/"],
+  ["gopher:/example.com/", "gopher://example.com/"],
+  ["ws:/example.com/", "ws://example.com/"],
+  ["wss:/example.com/", "wss://example.com/"],
+  ["data:/example.com/", "data:/example.com/"],
+  ["javascript:/example.com/", "javascript:/example.com/"],
+  ["mailto:/example.com/", "mailto:/example.com/"],
+  ["http:example.com/", "http://example.com/"],
+  ["ftp:example.com/", "ftp://example.com/"],
+  ["https:example.com/", "https://example.com/"],
+  ["madeupscheme:example.com/", "madeupscheme:example.com/"],
+  ["ftps:example.com/", "ftps:example.com/"],
+  ["gopher:example.com/", "gopher://example.com/"],
+  ["ws:example.com/", "ws://example.com/"],
+  ["wss:example.com/", "wss://example.com/"],
+  ["data:example.com/", "data:example.com/"],
+  ["javascript:example.com/", "javascript:example.com/"],
+  ["mailto:example.com/", "mailto:example.com/"],
+  // Escaping of non hierarchical URLs
+  //["javascript:alert(\t 1 \n\r)", "javascript:alert( 1 )"],
+  //['javascript:alert(" \1 \u03B2 ")', 'javascript:alert(" %01 %CE%B2 ")'],
+];
+
+function setBase(base) {
+  document.getElementById("base").href = base
+}
+
+function bURL(url, base) {
+  base = base || "about:blank"
+  setBase(base)
+  var a = document.createElement("a")
+  a.setAttribute("href", url)
+  return a
+}
+
+function test(input, expected) {
+  var result = new URL(input).href
+  if(result != expected) {
+    document.write("Expected: " + expected + ", got: " + result + ", for: " + input)
+    document.write("<br>")
+  } else {
+    //document.write("PASS<br>")
+  }
+
+  var bresult = new bURL(input).href
+  if(bresult != expected) {
+    document.write("BROWSER Expected: " + expected + ", got: " + bresult + ", for: " + input)
+    document.write("<br>")
+  } else {
+    //document.write("PASS<br>")
+  }
+}
+
+
+for (var i = 0; i < cases.length; ++i) {
+  test(cases[i][0], cases[i][1])
+}
+</script>

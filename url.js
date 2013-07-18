@@ -184,6 +184,12 @@ function URL(url, base, encoding) {
           }
           // XXX
           return h.toLowerCase()
+        },
+        relativePathDotMapping = {
+          "%2e": ".",
+          ".%2e" : "..",
+          "%2e." : "..",
+          "%2e%2e" : ".."
         }
 
     while((input[cursor-1] != EOF || cursor == 0) && !isInvalid) {
@@ -448,6 +454,9 @@ function URL(url, base, encoding) {
           if("\\" == c) {
             err("\\ not allowed in relative path.")
           }
+          if(relativePathDotMapping.hasOwnProperty(buffer.toLowerCase())) {
+            buffer = relativePathDotMapping[buffer.toLowerCase()]
+          }
           if(".." == buffer) {
             path.pop()
             if("/" != c && "\\" != c) {
@@ -469,7 +478,6 @@ function URL(url, base, encoding) {
             fragment = "#"
             state = "fragment"
           }
-        // XXX %2E / %2e normalization
         } else if("\t" != c && "\n" != c && "\r" != c) {
           buffer += percentEscape(c)
         }
