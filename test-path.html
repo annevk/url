@@ -28,12 +28,10 @@ var cases = [
   ["/foo/%2e", "/foo/"],
   ["/foo/%2e%2", "/foo/.%2"],
   ["/foo/%2e./%2e%2e/.%2e/%2e.bar", "/..bar"],
-
-  // escaped dots SHOULD NOT be unescaped
   */
-  ["/foo/%2e", "/foo/%2e"],
+  ["/foo/%2e", "/foo/"],
   ["/foo/%2e%2", "/foo/%2e%2"],
-  ["/foo/%2e./%2e%2e/.%2e/%2e.bar", "/foo/%2e./%2e%2e/.%2e/%2e.bar"],
+  ["/foo/%2e./%2e%2e/.%2e/%2e.bar", "/%2e.bar"],
 
   // Multiple slashes in a row should be preserved and treated like empty
   // directory names.
