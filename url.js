@@ -463,7 +463,7 @@ function URL(url, base, encoding) {
               path.push("")
             }
           } else if("." == buffer && "/" != c && "\\" != c) {
-            path.pop()
+            path.push("")
           } else if("." != buffer) {
             if("file" == scheme && path.length == 0 && buffer.length == 2 && ALPHA.test(buffer[0]) && buffer[1] == "|") {
               buffer = buffer[0] + ":"
