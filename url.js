@@ -356,17 +356,18 @@ function URL(url, base, encoding) {
           }
           seenAt = true
           for(var i = 0; i < buffer.length; i++) {
-            if("\t" == c || "\n" == c || "\r" == c) {
+            var cp = buffer[i]
+            if("\t" == cp || "\n" == cp || "\r" == cp) {
               err("Invalid whitespace in authority.")
               continue
             }
             // XXX check URL code points
-            if(":" == c && null == password) {
+            if(":" == cp && null === password) {
               password = ""
               continue
             }
-            var tempC = percentEscape(buffer[i])
-            ;(null != password) ? password += tempC : username += tempC
+            var tempC = percentEscape(cp)
+            ;(null !== password) ? password += tempC : username += tempC
           }
           buffer = ""
         } else if(EOF == c || "/" == c || "\\" == c || "?" == c || "#" == c) {
