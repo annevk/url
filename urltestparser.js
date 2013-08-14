@@ -30,7 +30,7 @@ function URLTestParser(input) {
         if(tokenMap.hasOwnProperty(nextC)) {
           output += tokenMap[nextC]
         } else if(nextC == "u") {
-          output += String.fromCharCode(Number.parseInt(input[++i] + input[++i] + input[++i] + input[++i], 16))
+          output += String.fromCharCode(parseInt(input[++i] + input[++i] + input[++i] + input[++i], 16))
         } else {
           throw new Error("Input is invalid.")
         }
