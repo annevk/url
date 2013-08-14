@@ -77,10 +77,10 @@ function esc(input) {
 }
 
 var copyBase = base
-//base = new URL(base)
+//base = new jURL(base)
 for(var i = 0, l = cases.length; i < l; i++) {
   var input = cases[i][0]
-  var components = serialize_components(new URL(input, new URL(base)))
+  var components = serialize_components(new jURL(input, new jURL(base)))
   document.write(serialize(input, copyBase, components))
   copyBase = ""
 }

@@ -28,7 +28,7 @@ function runTests(raw) {
   var tests = URLTestParser(raw)
   for(var i = 0, l = tests.length; i < l; i++) {
     var test = tests[i],
-        url = new URL(test.input, new URL(test.base))
+        url = new jURL(test.input, new jURL(test.base))
     if(url.protocol != test.protocol ||
        url.hostname != test.host ||
        url.port != test.port ||

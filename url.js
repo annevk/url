@@ -2,7 +2,7 @@
  * Does not process domain names or IP addresses.
  * Does not handle encoding for the query parameter.
  */
-function URL(url, base, encoding) {
+function jURL(url, base, encoding) {
   var relative = {
         "ftp": 21,
         "file" : 0,
