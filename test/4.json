@@ -1,0 +1,717 @@
+[
+  "Based on http://trac.webkit.org/browser/trunk/LayoutTests/fast/url/script-tests/relative.js",
+  {
+    "input": "http://www.google.com/foo?bar=baz#",
+    "base": "about:blank",
+    "output": {
+      "scheme": "http",
+      "username": "",
+      "password": null,
+      "host": "www.google.com",
+      "port": "",
+      "path": "/foo",
+      "query": "?bar=baz",
+      "fragment": "#"
+    }
+  },
+  {
+    "input": "http://www.google.com/foo?bar=baz# »",
+    "base": "about:blank",
+    "output": {
+      "scheme": "http",
+      "username": "",
+      "password": null,
+      "host": "www.google.com",
+      "port": "",
+      "path": "/foo",
+      "query": "?bar=baz",
+      "fragment": "# »"
+    }
+  },
+  {
+    "input": "http://[www.google.com]/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "http",
+      "username": "",
+      "password": null,
+      "host": "[www.google.com]",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http://www.google.com",
+    "base": "about:blank",
+    "output": {
+      "scheme": "http",
+      "username": "",
+      "password": null,
+      "host": "www.google.com",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http://192.0x00A80001",
+    "base": "about:blank",
+    "output": {
+      "scheme": "http",
+      "username": "",
+      "password": null,
+      "host": "192.0x00a80001",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http://www/foo%2Ehtml",
+    "base": "about:blank",
+    "output": {
+      "scheme": "http",
+      "username": "",
+      "password": null,
+      "host": "www",
+      "port": "",
+      "path": "/foo%2Ehtml",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http://www/foo/%2E/html",
+    "base": "about:blank",
+    "output": {
+      "scheme": "http",
+      "username": "",
+      "password": null,
+      "host": "www",
+      "port": "",
+      "path": "/foo/html",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http://user:pass@/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http://%25DOMAIN:foobar@foodomain.com/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "http",
+      "username": "%25DOMAIN",
+      "password": "foobar",
+      "host": "foodomain.com",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http:\\\\www.google.com\\foo",
+    "base": "about:blank",
+    "output": {
+      "scheme": "http",
+      "username": "",
+      "password": null,
+      "host": "www.google.com",
+      "port": "",
+      "path": "/foo",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http://foo:80/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "http",
+      "username": "",
+      "password": null,
+      "host": "foo",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http://foo:81/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "http",
+      "username": "",
+      "password": null,
+      "host": "foo",
+      "port": "81",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "httpa://foo:80/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "httpa",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "//foo:80/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http://foo:-80/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "https://foo:443/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "https",
+      "username": "",
+      "password": null,
+      "host": "foo",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "https://foo:80/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "https",
+      "username": "",
+      "password": null,
+      "host": "foo",
+      "port": "80",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "ftp://foo:21/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "ftp",
+      "username": "",
+      "password": null,
+      "host": "foo",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "ftp://foo:80/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "ftp",
+      "username": "",
+      "password": null,
+      "host": "foo",
+      "port": "80",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "gopher://foo:70/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "gopher",
+      "username": "",
+      "password": null,
+      "host": "foo",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "gopher://foo:443/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "gopher",
+      "username": "",
+      "password": null,
+      "host": "foo",
+      "port": "443",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "ws://foo:80/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "ws",
+      "username": "",
+      "password": null,
+      "host": "foo",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "ws://foo:81/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "ws",
+      "username": "",
+      "password": null,
+      "host": "foo",
+      "port": "81",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "ws://foo:443/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "ws",
+      "username": "",
+      "password": null,
+      "host": "foo",
+      "port": "443",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "ws://foo:815/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "ws",
+      "username": "",
+      "password": null,
+      "host": "foo",
+      "port": "815",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "wss://foo:80/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "wss",
+      "username": "",
+      "password": null,
+      "host": "foo",
+      "port": "80",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "wss://foo:81/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "wss",
+      "username": "",
+      "password": null,
+      "host": "foo",
+      "port": "81",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "wss://foo:443/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "wss",
+      "username": "",
+      "password": null,
+      "host": "foo",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "wss://foo:815/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "wss",
+      "username": "",
+      "password": null,
+      "host": "foo",
+      "port": "815",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http:/example.com/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "http",
+      "username": "",
+      "password": null,
+      "host": "example.com",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "ftp:/example.com/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "ftp",
+      "username": "",
+      "password": null,
+      "host": "example.com",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "https:/example.com/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "https",
+      "username": "",
+      "password": null,
+      "host": "example.com",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "madeupscheme:/example.com/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "madeupscheme",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "/example.com/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "file:/example.com/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "file",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "/example.com/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "ftps:/example.com/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "ftps",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "/example.com/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "gopher:/example.com/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "gopher",
+      "username": "",
+      "password": null,
+      "host": "example.com",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "ws:/example.com/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "ws",
+      "username": "",
+      "password": null,
+      "host": "example.com",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "wss:/example.com/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "wss",
+      "username": "",
+      "password": null,
+      "host": "example.com",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "data:/example.com/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "data",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "/example.com/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "javascript:/example.com/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "javascript",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "/example.com/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "mailto:/example.com/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "mailto",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "/example.com/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http:example.com/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "http",
+      "username": "",
+      "password": null,
+      "host": "example.com",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "ftp:example.com/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "ftp",
+      "username": "",
+      "password": null,
+      "host": "example.com",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "https:example.com/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "https",
+      "username": "",
+      "password": null,
+      "host": "example.com",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "madeupscheme:example.com/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "madeupscheme",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "example.com/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "ftps:example.com/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "ftps",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "example.com/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "gopher:example.com/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "gopher",
+      "username": "",
+      "password": null,
+      "host": "example.com",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "ws:example.com/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "ws",
+      "username": "",
+      "password": null,
+      "host": "example.com",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "wss:example.com/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "wss",
+      "username": "",
+      "password": null,
+      "host": "example.com",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "data:example.com/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "data",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "example.com/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "javascript:example.com/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "javascript",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "example.com/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "mailto:example.com/",
+    "base": "about:blank",
+    "output": {
+      "scheme": "mailto",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "example.com/",
+      "query": "",
+      "fragment": ""
+    }
+  }
+]

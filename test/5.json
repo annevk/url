@@ -1,0 +1,395 @@
+[
+  "Based on http://trac.webkit.org/browser/trunk/LayoutTests/fast/url/segments-userinfo-vs-host.html",
+  {
+    "input": "http:@www.example.com",
+    "base": "about:blank",
+    "output": {
+      "scheme": "http",
+      "username": "",
+      "password": null,
+      "host": "www.example.com",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http:/@www.example.com",
+    "base": "about:blank",
+    "output": {
+      "scheme": "http",
+      "username": "",
+      "password": null,
+      "host": "www.example.com",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http://@www.example.com",
+    "base": "about:blank",
+    "output": {
+      "scheme": "http",
+      "username": "",
+      "password": null,
+      "host": "www.example.com",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http:a:b@www.example.com",
+    "base": "about:blank",
+    "output": {
+      "scheme": "http",
+      "username": "a",
+      "password": "b",
+      "host": "www.example.com",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http:/a:b@www.example.com",
+    "base": "about:blank",
+    "output": {
+      "scheme": "http",
+      "username": "a",
+      "password": "b",
+      "host": "www.example.com",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http://a:b@www.example.com",
+    "base": "about:blank",
+    "output": {
+      "scheme": "http",
+      "username": "a",
+      "password": "b",
+      "host": "www.example.com",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http://@pple.com",
+    "base": "about:blank",
+    "output": {
+      "scheme": "http",
+      "username": "",
+      "password": null,
+      "host": "pple.com",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http::b@www.example.com",
+    "base": "about:blank",
+    "output": {
+      "scheme": "http",
+      "username": "",
+      "password": "b",
+      "host": "www.example.com",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http:/:b@www.example.com",
+    "base": "about:blank",
+    "output": {
+      "scheme": "http",
+      "username": "",
+      "password": "b",
+      "host": "www.example.com",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http://:b@www.example.com",
+    "base": "about:blank",
+    "output": {
+      "scheme": "http",
+      "username": "",
+      "password": "b",
+      "host": "www.example.com",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http:/:@/www.example.com",
+    "base": "about:blank",
+    "output": {
+      "scheme": "",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http://user@/www.example.com",
+    "base": "about:blank",
+    "output": {
+      "scheme": "",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http:@/www.example.com",
+    "base": "about:blank",
+    "output": {
+      "scheme": "",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http:/@/www.example.com",
+    "base": "about:blank",
+    "output": {
+      "scheme": "",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http://@/www.example.com",
+    "base": "about:blank",
+    "output": {
+      "scheme": "",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "https:@/www.example.com",
+    "base": "about:blank",
+    "output": {
+      "scheme": "",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http:a:b@/www.example.com",
+    "base": "about:blank",
+    "output": {
+      "scheme": "",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http:/a:b@/www.example.com",
+    "base": "about:blank",
+    "output": {
+      "scheme": "",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http://a:b@/www.example.com",
+    "base": "about:blank",
+    "output": {
+      "scheme": "",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http::@/www.example.com",
+    "base": "about:blank",
+    "output": {
+      "scheme": "",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http:a:@www.example.com",
+    "base": "about:blank",
+    "output": {
+      "scheme": "http",
+      "username": "a",
+      "password": "",
+      "host": "www.example.com",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http:/a:@www.example.com",
+    "base": "about:blank",
+    "output": {
+      "scheme": "http",
+      "username": "a",
+      "password": "",
+      "host": "www.example.com",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http://a:@www.example.com",
+    "base": "about:blank",
+    "output": {
+      "scheme": "http",
+      "username": "a",
+      "password": "",
+      "host": "www.example.com",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http://www.@pple.com",
+    "base": "about:blank",
+    "output": {
+      "scheme": "http",
+      "username": "www.",
+      "password": null,
+      "host": "pple.com",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http:@:www.example.com",
+    "base": "about:blank",
+    "output": {
+      "scheme": "",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http:/@:www.example.com",
+    "base": "about:blank",
+    "output": {
+      "scheme": "",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http://@:www.example.com",
+    "base": "about:blank",
+    "output": {
+      "scheme": "",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "http://:@www.example.com",
+    "base": "about:blank",
+    "output": {
+      "scheme": "http",
+      "username": "",
+      "password": "",
+      "host": "www.example.com",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  }
+]
