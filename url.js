@@ -1,8 +1,20 @@
 /* Any copyright is dedicated to the Public Domain.
  * http://creativecommons.org/publicdomain/zero/1.0/ */
 
-var jURL = (function() {
+(function(scope) {
   'use strict';
+
+  // feature detect for URL constructor
+  var hasWorkingUrl = false;
+  if (!scope.forceJURL) {
+    try {
+      var u = new URL('b', 'http://a');
+      hasWorkingUrl = u.href === 'http://a/b';
+    } catch(e) {}
+  }
+
+  if (hasWorkingUrl)
+    return;
 
   var relative = Object.create(null);
   relative['ftp'] = 21;
@@ -548,6 +560,6 @@ var jURL = (function() {
     }
   };
 
-  return jURL;
+  scope.URL = jURL;
 
-})();
+})(window);
