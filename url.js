@@ -184,7 +184,7 @@
           if (EOF == c) {
             this._host = base._host;
             this._port = base._port;
-            this._path = base._path;
+            this._path = base._path.slice();
             this._query = base._query;
             break loop;
           } else if ('/' == c || '\\' == c) {
@@ -194,13 +194,13 @@
           } else if ('?' == c) {
             this._host = base._host;
             this._port = base._port;
-            this._path = base._path;
+            this._path = base._path.slice();
             this._query = '?';
             state = 'query';
           } else if ('#' == c) {
             this._host = base._host;
             this._port = base._port;
-            this._path = base._path;
+            this._path = base._path.slice();
             this._query = base._query;
             this._fragment = '#';
             state = 'fragment';
@@ -213,7 +213,7 @@
               (EOF != nextNextC && '/' != nextNextC && '\\' != nextNextC && '?' != nextNextC && '#' != nextNextC)) {
               this._host = base._host;
               this._port = base._port;
-              this._path = base._path;
+              this._path = base._path.slice();
               this._path.pop();
             }
             state = 'relative path';

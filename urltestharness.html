@@ -5,8 +5,16 @@
 <script src=testharness.js></script>
 <script src=testharnessreport.js></script>
 <script src=urltestparser.js></script>
+<script>forceJURL = true;</script>
+<script src="url.js"></script>
 <div id=log></div>
 <script>
+test(function() {
+  var u = new URL('http://a/foo');
+  var u2 = new URL('bar', u);
+  assert_equals(u.href, 'http://a/foo');
+}, 'Consistency Check');
+
 var setup = async_test("Loading data…")
 setup.step(function() {
   var request = new XMLHttpRequest()
