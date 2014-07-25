@@ -562,4 +562,4 @@
 
   scope.URL = jURL;
 
-})(window);
+})(this);
