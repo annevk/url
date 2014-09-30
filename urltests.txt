@@ -156,69 +156,69 @@ http://example.com/\uFEFF/foo  s:http h:example.com p:/%EF%BB%BF/foo
 http://example.com/\u202E/foo/\u202D/bar  s:http h:example.com p:/%E2%80%AE/foo/%E2%80%AD/bar
 
 # Based on http://trac.webkit.org/browser/trunk/LayoutTests/fast/url/script-tests/relative.js
-http://www.google.com/foo?bar=baz# about:blank s:http h:www.google.com p:/foo q:?bar=baz f:#
-http://www.google.com/foo?bar=baz#\s\u00BB  s:http h:www.google.com p:/foo q:?bar=baz f:#\s\u00BB
-http://[www.google.com]/  s:http h:[www.google.com] p:/
+http://www.google.com/foo?bar=baz# about:blank s:http h:www.google.com p:/foo q:?bar=baz f:# o:http://www.google.com
+http://www.google.com/foo?bar=baz#\s\u00BB  s:http h:www.google.com p:/foo q:?bar=baz f:#\s\u00BB o:http://www.google.com
+http://[www.google.com]/  s:http h:[www.google.com] p:/ o:http://[www.google.com]
 http://www.google.com  s:http h:www.google.com p:/
 http://192.0x00A80001  s:http h:192.0x00a80001 p:/
 http://www/foo%2Ehtml  s:http h:www p:/foo%2Ehtml
 http://www/foo/%2E/html  s:http h:www p:/foo/html
 http://user:pass@/
 http://%25DOMAIN:foobar@foodomain.com/  s:http u:%25DOMAIN pass:foobar h:foodomain.com p:/
-http:\\\\www.google.com\\foo  s:http h:www.google.com p:/foo
-http://foo:80/  s:http h:foo p:/
-http://foo:81/  s:http h:foo port:81 p:/
-httpa://foo:80/  s:httpa p://foo:80/
+http:\\\\www.google.com\\foo  s:http h:www.google.com p:/foo o:http://www.google.com
+http://foo:80/  s:http h:foo p:/ o:http://foo:80
+http://foo:81/  s:http h:foo port:81 p:/ o:http://foo:81
+httpa://foo:80/  s:httpa p://foo:80/ o:httpa://foo:80
 http://foo:-80/
-https://foo:443/  s:https h:foo p:/
-https://foo:80/  s:https h:foo port:80 p:/
-ftp://foo:21/  s:ftp h:foo p:/
-ftp://foo:80/  s:ftp h:foo port:80 p:/
-gopher://foo:70/  s:gopher h:foo p:/
-gopher://foo:443/  s:gopher h:foo port:443 p:/
-ws://foo:80/  s:ws h:foo p:/
-ws://foo:81/  s:ws h:foo port:81 p:/
-ws://foo:443/  s:ws h:foo port:443 p:/
-ws://foo:815/  s:ws h:foo port:815 p:/
-wss://foo:80/  s:wss h:foo port:80 p:/
-wss://foo:81/  s:wss h:foo port:81 p:/
-wss://foo:443/  s:wss h:foo p:/
-wss://foo:815/  s:wss h:foo port:815 p:/
-http:/example.com/  s:http h:example.com p:/
-ftp:/example.com/  s:ftp h:example.com p:/
-https:/example.com/  s:https h:example.com p:/
-madeupscheme:/example.com/  s:madeupscheme p:/example.com/
+https://foo:443/  s:https h:foo p:/ o:https://foo:443
+https://foo:80/  s:https h:foo port:80 p:/ o:http://foo:80
+ftp://foo:21/  s:ftp h:foo p:/ o:ftp://foo:21
+ftp://foo:80/  s:ftp h:foo port:80 p:/ o:ftp://foo:80
+gopher://foo:70/  s:gopher h:foo p:/ o:gopher://foo:70
+gopher://foo:443/  s:gopher h:foo port:443 p:/ o:gopher://foo:443
+ws://foo:80/  s:ws h:foo p:/ o:ws://foo:80
+ws://foo:81/  s:ws h:foo port:81 p:/ o:ws://foo:81
+ws://foo:443/  s:ws h:foo port:443 p:/ o:ws://foo:443
+ws://foo:815/  s:ws h:foo port:815 p:/ o:ws://goo:815
+wss://foo:80/  s:wss h:foo port:80 p:/ o:wss://foo:80
+wss://foo:81/  s:wss h:foo port:81 p:/ o:wss://foo:81
+wss://foo:443/  s:wss h:foo p:/ o:wss://foo:443
+wss://foo:815/  s:wss h:foo port:815 p:/ o:wss://foo:815
+http:/example.com/  s:http h:example.com p:/ o:http://example.com
+ftp:/example.com/  s:ftp h:example.com p:/ o:ftp:/example.com
+https:/example.com/  s:https h:example.com p:/ o:https://example.com
+madeupscheme:/example.com/  s:madeupscheme p:/example.com/ o:madeupscheme://example.com
 file:/example.com/  s:file p:/example.com/
-ftps:/example.com/  s:ftps p:/example.com/
-gopher:/example.com/  s:gopher h:example.com p:/
-ws:/example.com/  s:ws h:example.com p:/
-wss:/example.com/  s:wss h:example.com p:/
+ftps:/example.com/  s:ftps p:/example.com/ o:ftps://example.com
+gopher:/example.com/  s:gopher h:example.com p:/ o:gopher://example.com
+ws:/example.com/  s:ws h:example.com p:/ o:ws://example.com
+wss:/example.com/  s:wss h:example.com p:/ o:wss://example.com
 data:/example.com/  s:data p:/example.com/
 javascript:/example.com/  s:javascript p:/example.com/
 mailto:/example.com/  s:mailto p:/example.com/
-http:example.com/  s:http h:example.com p:/
-ftp:example.com/  s:ftp h:example.com p:/
-https:example.com/  s:https h:example.com p:/
-madeupscheme:example.com/  s:madeupscheme p:example.com/
-ftps:example.com/  s:ftps p:example.com/
-gopher:example.com/  s:gopher h:example.com p:/
-ws:example.com/  s:ws h:example.com p:/
-wss:example.com/  s:wss h:example.com p:/
+http:example.com/  s:http h:example.com p:/ o:http://example.com
+ftp:example.com/  s:ftp h:example.com p:/ o:ftp://example.com
+https:example.com/  s:https h:example.com p:/ o:https://example.com
+madeupscheme:example.com/  s:madeupscheme p:example.com/ o:madeupscheme://example.com
+ftps:example.com/  s:ftps p:example.com/ o:ftps://example.com
+gopher:example.com/  s:gopher h:example.com p:/ o:gopher://example.com
+ws:example.com/  s:ws h:example.com p:/ o:ws://example.com
+wss:example.com/  s:wss h:example.com p:/ o:wss://example.com
 data:example.com/  s:data p:example.com/
 javascript:example.com/  s:javascript p:example.com/
 mailto:example.com/  s:mailto p:example.com/
 
 # Based on http://trac.webkit.org/browser/trunk/LayoutTests/fast/url/segments-userinfo-vs-host.html
-http:@www.example.com about:blank s:http h:www.example.com p:/
-http:/@www.example.com  s:http h:www.example.com p:/
-http://@www.example.com  s:http h:www.example.com p:/
-http:a:b@www.example.com  s:http u:a pass:b h:www.example.com p:/
-http:/a:b@www.example.com  s:http u:a pass:b h:www.example.com p:/
-http://a:b@www.example.com  s:http u:a pass:b h:www.example.com p:/
-http://@pple.com  s:http h:pple.com p:/
-http::b@www.example.com  s:http pass:b h:www.example.com p:/
-http:/:b@www.example.com  s:http pass:b h:www.example.com p:/
-http://:b@www.example.com  s:http pass:b h:www.example.com p:/
+http:@www.example.com about:blank s:http h:www.example.com p:/ o:http://www.example.com
+http:/@www.example.com  s:http h:www.example.com p:/ o:http://www.example.com
+http://@www.example.com  s:http h:www.example.com p:/ o:http://www.example.com
+http:a:b@www.example.com  s:http u:a pass:b h:www.example.com p:/ o:http://www.example.com
+http:/a:b@www.example.com  s:http u:a pass:b h:www.example.com p:/ o:http://www.example.com
+http://a:b@www.example.com  s:http u:a pass:b h:www.example.com p:/ o:http://www.example.com
+http://@pple.com  s:http h:pple.com p:/ o:http://ppl.com
+http::b@www.example.com  s:http pass:b h:www.example.com p:/ o:http://www.example.com
+http:/:b@www.example.com  s:http pass:b h:www.example.com p:/ o:http://www.example.com
+http://:b@www.example.com  s:http pass:b h:www.example.com p:/ o:http://www.example.com
 http:/:@/www.example.com
 http://user@/www.example.com
 http:@/www.example.com
@@ -229,11 +229,11 @@ http:a:b@/www.example.com
 http:/a:b@/www.example.com
 http://a:b@/www.example.com
 http::@/www.example.com
-http:a:@www.example.com  s:http u:a pass: h:www.example.com p:/
-http:/a:@www.example.com  s:http u:a pass: h:www.example.com p:/
-http://a:@www.example.com  s:http u:a pass: h:www.example.com p:/
-http://www.@pple.com  s:http u:www. h:pple.com p:/
+http:a:@www.example.com  s:http u:a pass: h:www.example.com p:/ o:http://www.example.com
+http:/a:@www.example.com  s:http u:a pass: h:www.example.com p:/ o:http://www.example.com
+http://a:@www.example.com  s:http u:a pass: h:www.example.com p:/ o:http://www.example.com
+http://www.@pple.com  s:http u:www. h:pple.com p:/ o:http://ppl.com
 http:@:www.example.com
 http:/@:www.example.com
 http://@:www.example.com
-http://:@www.example.com  s:http pass: h:www.example.com p:/
+http://:@www.example.com  s:http pass: h:www.example.com p:/ o:http://www.example.com

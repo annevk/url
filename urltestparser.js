@@ -1,7 +1,7 @@
 function URLTestParser(input) {
   var relativeSchemes = ["ftp", "file", "gopher", "http", "https", "ws", "wss"],
       tokenMap = { "\\": "\\", n: "\n", r: "\r", s: " ", t: "\t", f: "\f" }
-      resultMap = { s: "scheme", u: "username", pass: "password", h: "host", port: "port", p: "path", q: "query", f: "fragment" },
+      resultMap = { s: "scheme", u: "username", pass: "password", h: "host", port: "port", p: "path", q: "query", f: "fragment", o: "origin" },
       results = []
   function Test() {
     this.input = ""
@@ -14,6 +14,7 @@ function URLTestParser(input) {
     this.path = ""
     this.query = ""
     this.fragment = ""
+    this.origin = ""
     Object.defineProperties(this, {
       "href": { get: function() { return !this.scheme ? this.input : this.protocol + (relativeSchemes.indexOf(this.scheme) != -1 ? "//" + (("" != this.username || null != this.password) ? this.username + (null != this.password ? ":" + this.password : "") + "@" : "") + this.host : "") + (this.port ? ":" + this.port : "") + this.path + this.query + this.fragment } },
       "protocol": { get: function() { return this.scheme + ":" } },
