@@ -9,7 +9,8 @@
   if (!scope.forceJURL) {
     try {
       var u = new URL('b', 'http://a');
-      hasWorkingUrl = u.href === 'http://a/b';
+      u.pathname = 'c%20d';
+      hasWorkingUrl = u.href === 'http://a/c%20d';
     } catch(e) {}
   }
 
