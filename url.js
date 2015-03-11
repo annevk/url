@@ -477,6 +477,9 @@
   }
 
   jURL.prototype = {
+    toString: function() {
+      return this.href;
+    },
     get href() {
       if (this._isInvalid)
         return this._url;
