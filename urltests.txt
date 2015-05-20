@@ -237,3 +237,7 @@ http:@:www.example.com
 http:/@:www.example.com
 http://@:www.example.com
 http://:@www.example.com  s:http pass: h:www.example.com p:/ o:http://www.example.com
+
+# Issue #13
+/some/path http://user:pass@example.org:21/smth s:http u:user pass:pass h:example.org port:21 p:/some/path
+
