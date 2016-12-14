@@ -4,7 +4,7 @@
   "main": "url.js",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/github/URL.git"
+    "url": "git+https://github.com/webcomponents/URL.git"
   },
   "license": "SAX-PD"
 }
