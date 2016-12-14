@@ -145,7 +145,7 @@
 
         case 'scheme data':
           if ('?' == c) {
-            query = '?';
+            this._query = '?';
             state = 'query';
           } else if ('#' == c) {
             this._fragment = '#';
@@ -613,4 +613,4 @@
 
   scope.URL = jURL;
 
-})(this);
+})(window);
