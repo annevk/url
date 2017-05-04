@@ -1,0 +1,283 @@
+[
+  "Based on http://trac.webkit.org/browser/trunk/LayoutTests/fast/url/file.html",
+  {
+    "input": "file:c:\\foo\\bar.html",
+    "base": "file:///tmp/mock/path",
+    "output": {
+      "scheme": "file",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "/c:/foo/bar.html",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "  File:c|////foo\\bar.html",
+    "base": "file:///tmp/mock/path",
+    "output": {
+      "scheme": "file",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "/c:////foo/bar.html",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "C|/foo/bar",
+    "base": "file:///tmp/mock/path",
+    "output": {
+      "scheme": "file",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "/C:/foo/bar",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "/C|\\foo\\bar",
+    "base": "file:///tmp/mock/path",
+    "output": {
+      "scheme": "file",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "/C:/foo/bar",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "//C|/foo/bar",
+    "base": "file:///tmp/mock/path",
+    "output": {
+      "scheme": "file",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "/C:/foo/bar",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "//server/file",
+    "base": "file:///tmp/mock/path",
+    "output": {
+      "scheme": "file",
+      "username": "",
+      "password": null,
+      "host": "server",
+      "port": "",
+      "path": "/file",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "\\\\server\\file",
+    "base": "file:///tmp/mock/path",
+    "output": {
+      "scheme": "file",
+      "username": "",
+      "password": null,
+      "host": "server",
+      "port": "",
+      "path": "/file",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "/\\server/file",
+    "base": "file:///tmp/mock/path",
+    "output": {
+      "scheme": "file",
+      "username": "",
+      "password": null,
+      "host": "server",
+      "port": "",
+      "path": "/file",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "file:///foo/bar.txt",
+    "base": "file:///tmp/mock/path",
+    "output": {
+      "scheme": "file",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "/foo/bar.txt",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "file:///home/me",
+    "base": "file:///tmp/mock/path",
+    "output": {
+      "scheme": "file",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "/home/me",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "file:c:\\foo\\bar.html",
+    "base": "file:///tmp/mock/path",
+    "output": {
+      "scheme": "file",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "/c:/foo/bar.html",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "//",
+    "base": "file:///tmp/mock/path",
+    "output": {
+      "scheme": "file",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "///",
+    "base": "file:///tmp/mock/path",
+    "output": {
+      "scheme": "file",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "///test",
+    "base": "file:///tmp/mock/path",
+    "output": {
+      "scheme": "file",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "/test",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "file://test",
+    "base": "file:///tmp/mock/path",
+    "output": {
+      "scheme": "file",
+      "username": "",
+      "password": null,
+      "host": "test",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "file://localhost",
+    "base": "file:///tmp/mock/path",
+    "output": {
+      "scheme": "file",
+      "username": "",
+      "password": null,
+      "host": "localhost",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "file://localhost/",
+    "base": "file:///tmp/mock/path",
+    "output": {
+      "scheme": "file",
+      "username": "",
+      "password": null,
+      "host": "localhost",
+      "port": "",
+      "path": "/",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "file://localhost/test",
+    "base": "file:///tmp/mock/path",
+    "output": {
+      "scheme": "file",
+      "username": "",
+      "password": null,
+      "host": "localhost",
+      "port": "",
+      "path": "/test",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "test",
+    "base": "file:///tmp/mock/path",
+    "output": {
+      "scheme": "file",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "/tmp/mock/test",
+      "query": "",
+      "fragment": ""
+    }
+  },
+  {
+    "input": "file:test",
+    "base": "file:///tmp/mock/path",
+    "output": {
+      "scheme": "file",
+      "username": "",
+      "password": null,
+      "host": "",
+      "port": "",
+      "path": "/tmp/mock/test",
+      "query": "",
+      "fragment": ""
+    }
+  }
+]
