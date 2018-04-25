@@ -1,10 +1,19 @@
 {
-  "name": "url-polyfill",
+  "name": "@webcomponents/url",
   "version": "0.5.7",
   "main": "url.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/webcomponents/URL.git"
   },
-  "license": "SAX-PD"
+  "license": "SAX-PD",
+  "description": "URL parser in JavaScript",
+  "bugs": {
+    "url": "https://github.com/webcomponents/URL/issues"
+  },
+  "homepage": "https://github.com/webcomponents/URL#readme",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Erik Arvidsson <arv@chromium.org>"
 }
