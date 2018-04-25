@@ -16,5 +16,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Erik Arvidsson <arv@chromium.org>",
-  "main": "url.js"
+  "publishConfig": {
+    "access": "public"
+  }
 }
