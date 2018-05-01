@@ -463,6 +463,10 @@
 
   // Does not process domain names or IP addresses.
   // Does not handle encoding for the query parameter.
+  /**
+   * @constructor
+   * @implements {URL}
+   */
   function jURL(url, base /* , encoding */) {
     if (base !== undefined && !(base instanceof jURL))
       base = new jURL(String(base));
