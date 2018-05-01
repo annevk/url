@@ -1,6 +1,6 @@
 {
   "name": "@webcomponents/url",
-  "version": "0.7.0",
+  "version": "0.7.1",
   "main": "url.js",
   "repository": {
     "type": "git",
