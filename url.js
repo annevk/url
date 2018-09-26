@@ -1,6 +1,9 @@
 /* Any copyright is dedicated to the Public Domain.
  * http://creativecommons.org/publicdomain/zero/1.0/ */
 
+ /** @type {boolean|undefined} */
+Window.prototype.forceJURL = false;
+
 (function(scope) {
   'use strict';
 
@@ -80,6 +83,11 @@
       ALPHA = /[a-zA-Z]/,
       ALPHANUMERIC = /[a-zA-Z0-9\+\-\.]/;
 
+  /**
+   * @param {!string} input
+   * @param {?string=} stateOverride
+   * @param {(URL|string)=} base
+   */
   function parse(input, stateOverride, base) {
     function err(message) {
       errors.push(message)
@@ -465,7 +473,9 @@
   // Does not handle encoding for the query parameter.
   /**
    * @constructor
-   * @implements {URL}
+   * @extends {URL}
+   * @param {!string} url
+   * @param {(URL|string)=} base
    */
   function jURL(url, base /* , encoding */) {
     if (base !== undefined && !(base instanceof jURL))
