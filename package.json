@@ -13,10 +13,16 @@
   },
   "homepage": "https://github.com/webcomponents/URL#readme",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "gulp",
+    "prepack": "npm run build"
   },
   "author": "Erik Arvidsson <arv@chromium.org>",
   "publishConfig": {
     "access": "public"
+  },
+  "devDependencies": {
+    "google-closure-compiler": "^20180910.0.0",
+    "gulp": "^4.0.0",
+    "gulp-sourcemaps": "^2.6.4"
   }
 }
