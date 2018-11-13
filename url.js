@@ -581,6 +581,10 @@ Window.prototype.forceJURL = false;
     set hash(hash) {
       if (this._isInvalid)
         return;
+      if(!hash) {
+        this._fragment = '';
+        return;
+      } 
       this._fragment = '#';
       if ('#' == hash[0])
         hash = hash.slice(1);
