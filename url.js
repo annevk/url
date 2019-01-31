@@ -619,12 +619,12 @@ Window.prototype.forceJURL = false;
   // Copy over the static methods
   var OriginalURL = scope.URL;
   if (OriginalURL) {
-    jURL.createObjectURL = function(blob) {
+    jURL['createObjectURL'] = function(blob) {
       // IE extension allows a second optional options argument.
       // http://msdn.microsoft.com/en-us/library/ie/hh772302(v=vs.85).aspx
       return OriginalURL.createObjectURL.apply(OriginalURL, arguments);
     };
-    jURL.revokeObjectURL = function(url) {
+    jURL['revokeObjectURL'] = function(url) {
       OriginalURL.revokeObjectURL(url);
     };
   }
