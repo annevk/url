@@ -1,9 +1,9 @@
-# URL
-URL parser in JavaScript
+## 🚨 Moved to [`webcomponents/polyfills/packages/url`][1] 🚨
 
-This is a fork of [annevk/url](https://github.com/annevk/url). The code has been converted to pragmatic JS with a
-huge performance improvement as a side effect.
+The [`webcomponents/template`][2] repo has been migrated to [`packages/url`][1] folder of the [`webcomponents/polyfills`][3] 🚝  *monorepo*.
 
-# License
+We are *actively* working on migrating open Issues and PRs to the new repo. New Issues and PRs should be filed at [`webcomponents/polyfills`][3].
 
-This is public domain.
+[1]: https://github.com/webcomponents/polyfills/tree/master/packages/url
+[2]: https://github.com/webcomponents/url
+[3]: https://github.com/webcomponents/polyfills
